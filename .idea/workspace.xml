@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8470d40b-84d1-4f61-a492-62046d83fc2a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="8470d40b-84d1-4f61-a492-62046d83fc2a" name="Changes" comment="Inferring ordering transitively based on partial information">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/SortJob.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/store/BasicComparisonStore.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/ComparisonContainer.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/container/ComparisonContainer.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/ComparisonStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/store/ComparisonStore.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/ComparisonUnknownException.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/container/ComparisonUnknownException.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/ContainerComparator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/container/ContainerComparator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/Playground.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/Playground.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -61,10 +67,18 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="ch.lucaro.hitls.container" />
+      <recent name="ch.lucaro.hitls.store" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="Playground" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ch.lucaro.hitls.Playground" />
       <module name="HumanInTheLoopSort.main" />
+      <shortenClasspath name="NONE" />
+      <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -91,7 +105,7 @@
       <option name="presentableId" value="Default" />
       <updated>1702568789479</updated>
       <workItem from="1702568790608" duration="4463000" />
-      <workItem from="1702624900635" duration="3916000" />
+      <workItem from="1702624900635" duration="6338000" />
     </task>
     <task id="LOCAL-00001" summary="Initial proof-of-concept">
       <option name="closed" value="true" />
@@ -101,7 +115,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702572089453</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Inferring ordering transitively based on partial information">
+      <option name="closed" value="true" />
+      <created>1702632156672</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1702632156672</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,6 +131,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial proof-of-concept" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial proof-of-concept" />
+    <MESSAGE value="Inferring ordering transitively based on partial information" />
+    <option name="LAST_COMMIT_MESSAGE" value="Inferring ordering transitively based on partial information" />
   </component>
 </project>

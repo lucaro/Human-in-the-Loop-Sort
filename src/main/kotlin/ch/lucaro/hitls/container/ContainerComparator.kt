@@ -1,4 +1,6 @@
-package ch.lucaro.hitls
+package ch.lucaro.hitls.container
+
+import ch.lucaro.hitls.store.ComparisonStore
 
 
 class ContainerComparator<T>(private val store: ComparisonStore<T>) : Comparator<ComparisonContainer<T>> {

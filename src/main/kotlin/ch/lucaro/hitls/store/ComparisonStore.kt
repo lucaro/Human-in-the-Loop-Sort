@@ -1,4 +1,4 @@
-package ch.lucaro.hitls
+package ch.lucaro.hitls.store
 
 /**
  * Stores pairwise comparisons of elements of type <T>
