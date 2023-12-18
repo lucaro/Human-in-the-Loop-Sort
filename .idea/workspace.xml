@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8470d40b-84d1-4f61-a492-62046d83fc2a" name="Changes" comment="Some refactoring to increase reusability">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/Simulation.kt" afterDir="false" />
+    <list default="true" id="8470d40b-84d1-4f61-a492-62046d83fc2a" name="Changes" comment="Some simulation code for comparison of different aspects">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/store/MajorityVotingComparisonStore.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/store/VotingComparisonStore.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/store/BasicComparisonStore.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/store/BasicComparisonStore.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,10 +22,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Interface" />
         <option value="Kotlin Data Class" />
-        <option value="Kotlin Class" />
         <option value="Kotlin Object" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -114,7 +114,7 @@
       <updated>1702568789479</updated>
       <workItem from="1702568790608" duration="4463000" />
       <workItem from="1702624900635" duration="7042000" />
-      <workItem from="1702912728806" duration="1519000" />
+      <workItem from="1702912728806" duration="4456000" />
     </task>
     <task id="LOCAL-00001" summary="Initial proof-of-concept">
       <option name="closed" value="true" />
@@ -140,7 +140,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702656603446</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Some simulation code for comparison of different aspects">
+      <option name="closed" value="true" />
+      <created>1702914470386</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1702914470386</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -150,6 +158,7 @@
     <MESSAGE value="Initial proof-of-concept" />
     <MESSAGE value="Inferring ordering transitively based on partial information" />
     <MESSAGE value="Some refactoring to increase reusability" />
-    <option name="LAST_COMMIT_MESSAGE" value="Some refactoring to increase reusability" />
+    <MESSAGE value="Some simulation code for comparison of different aspects" />
+    <option name="LAST_COMMIT_MESSAGE" value="Some simulation code for comparison of different aspects" />
   </component>
 </project>
