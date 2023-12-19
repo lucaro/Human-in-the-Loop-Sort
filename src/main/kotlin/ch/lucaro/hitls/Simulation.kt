@@ -2,6 +2,7 @@ package ch.lucaro.hitls
 
 import ch.lucaro.hitls.container.ComparisonContainer
 import ch.lucaro.hitls.store.BasicComparisonStore
+import ch.lucaro.hitls.store.MajorityVotingComparisonStore
 import java.io.File
 import kotlin.random.Random
 
@@ -10,47 +11,51 @@ object Simulation {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        val writer = File("simulations/1_no_uncertainty/sublist.tsv").printWriter()
+        for (agreement in 95 downTo 50 step 5) {
 
-        writer.println("length\trun\tcomparisons")
+            val writer = File("simulations/2_uncertainty/agreement_$agreement.tsv").printWriter()
 
-        for(length in 8 .. 1024) {
-            for (run in 1 .. 10) {
+            writer.println("length\trun\tcomparisons\blacklistings")
 
-                val random = Random(length * run)
-                val masterList = List(length) { ComparisonContainer(it) }.shuffled(random)
-                val store = BasicComparisonStore<Int>()
+            for (length in 16..1024 step 16) {
+                for (run in 1..10) {
 
-                val job = SortJob( random, masterList, store )
+                    val random = Random(length * run * agreement)
+                    val masterList = List(length) { ComparisonContainer(it) }.shuffled(random)
+                    val store = MajorityVotingComparisonStore<Int, Int>(3)
 
-                var comparisons = 0
+                    val job = SortJob(random, masterList, store)
 
-                while (true) {
+                    var comparisons = 0
 
-                    val pair = job.nextPair() ?: break
+                    while (true) {
 
-                    //no uncertainty
-                    if (pair.first <= pair.second) {
-                        store.store(pair.first, pair.second)
-                    } else {
-                        store.store(pair.second, pair.first)
+                        val pair = job.nextPair() ?: break
+
+                        val decision = pair.first <= pair.second
+
+                        if (decision xor (random.nextInt(100) <= agreement)) {
+                            store.vote(comparisons, pair.first, pair.second)
+                        } else {
+                            store.vote(comparisons, pair.second, pair.first)
+                        }
+
+                        ++comparisons
+
                     }
 
-                    ++comparisons
+                    writer.println("$length\t$run\t$comparisons\t${job.blacklistCount}")
 
                 }
 
-                writer.println("$length\t$run\t$comparisons")
+                println(length)
 
             }
 
-            println(length)
+            writer.flush()
+            writer.close()
 
         }
-
-        writer.flush()
-        writer.close()
-
     }
 
 }

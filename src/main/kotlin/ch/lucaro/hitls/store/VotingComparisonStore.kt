@@ -7,4 +7,9 @@ interface VotingComparisonStore<T, ID> : ComparisonStore<T> {
      */
     fun vote(id: ID, o1: T, o2: T)
 
+    /**
+     * Explicitly blacklists a pairing to remove inconsistencies.
+     */
+    fun blacklist(o1: Any, o2: Any)
+
 }

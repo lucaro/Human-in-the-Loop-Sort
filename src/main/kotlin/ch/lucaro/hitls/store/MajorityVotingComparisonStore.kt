@@ -16,6 +16,8 @@ class MajorityVotingComparisonStore<T, ID>(
 
     private val acceptedPairs = ConcurrentHashMap.newKeySet<Pair<T, T>>()
 
+    private val blackList = ConcurrentHashMap.newKeySet<Pair<T, T>>()
+
 
     override fun compare(o1: T, o2: T): Int? {
         //check for known matches
@@ -24,7 +26,7 @@ class MajorityVotingComparisonStore<T, ID>(
             logger.debug { "found ($o1, $o2)" }
             return -1
         }
-        if ((votes[p1]?.size ?: 0) >= this.minVotesToAcceptOption) {
+        if ((votes[p1]?.size ?: 0) >= this.minVotesToAcceptOption && !blackList.contains(p1)) {
             acceptedPairs.add(p1)
             logger.debug { "sufficient votes for ($o1, $o2), accepting" }
             return -1
@@ -35,7 +37,7 @@ class MajorityVotingComparisonStore<T, ID>(
             logger.debug { "found ($o2, $o1)" }
             return 1
         }
-        if ((votes[p2]?.size ?: 0) >= this.minVotesToAcceptOption) {
+        if ((votes[p2]?.size ?: 0) >= this.minVotesToAcceptOption && !blackList.contains(p2)) {
             acceptedPairs.add(p2)
             logger.debug { "sufficient votes for ($o2, $o1), accepting" }
             return 1
@@ -105,5 +107,23 @@ class MajorityVotingComparisonStore<T, ID>(
             logger.debug { "registering initial vote by $id for ($o1, $o2)" }
         }
 
+    }
+
+    override fun blacklist(o1: Any, o2: Any) {
+
+        logger.info { "blacklisting ($o1, $o2)" }
+
+        val p1 = o1 as T to o2 as T
+        if (acceptedPairs.contains(p1)) {
+            blackList.add(p1)
+            acceptedPairs.remove(p1)
+            return
+        }
+        val p2 = o2 to o1
+        if (acceptedPairs.contains(p2)) {
+            blackList.add(p2)
+            acceptedPairs.remove(p2)
+            return
+        }
     }
 }

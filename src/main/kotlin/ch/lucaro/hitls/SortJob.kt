@@ -4,6 +4,7 @@ import ch.lucaro.hitls.container.ComparisonContainer
 import ch.lucaro.hitls.container.ComparisonUnknownException
 import ch.lucaro.hitls.container.ContainerComparator
 import ch.lucaro.hitls.store.ComparisonStore
+import ch.lucaro.hitls.store.VotingComparisonStore
 import kotlin.math.max
 import kotlin.math.pow
 import kotlin.random.Random
@@ -15,6 +16,9 @@ class SortJob<T>(
 ) {
 
     private val comparator = ContainerComparator(this.store)
+
+    var blacklistCount = 0
+        private set
 
     fun nextPair(): Pair<T, T>? {
 
@@ -38,6 +42,16 @@ class SortJob<T>(
         } catch (e: ComparisonUnknownException) {
             val pair = e.pair
             return pair.first.item as T to pair.second.item as T
+        } catch (i: java.lang.IllegalArgumentException) {
+
+            val last = comparator.lastComparison
+
+            if (store is VotingComparisonStore<*, *>) {
+                store.blacklist(last.first.item!!, last.second.item!!)
+            }
+
+            ++blacklistCount
+
         }
 
         return null
