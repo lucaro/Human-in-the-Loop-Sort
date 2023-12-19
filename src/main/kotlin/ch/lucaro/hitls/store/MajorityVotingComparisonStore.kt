@@ -3,7 +3,6 @@ package ch.lucaro.hitls.store
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.concurrent.ConcurrentHashMap
-import java.util.concurrent.ConcurrentSkipListSet
 
 class MajorityVotingComparisonStore<T, ID>(
 
@@ -13,9 +12,9 @@ class MajorityVotingComparisonStore<T, ID>(
 
     private val logger: KLogger = KotlinLogging.logger {}
 
-    private val votes = ConcurrentHashMap<Pair<T, T>, ConcurrentSkipListSet<ID>>()
+    private val votes = ConcurrentHashMap<Pair<T, T>, MutableSet<ID>>()
 
-    private val acceptedPairs = ConcurrentSkipListSet<Pair<T, T>>()
+    private val acceptedPairs = ConcurrentHashMap.newKeySet<Pair<T, T>>()
 
 
     override fun compare(o1: T, o2: T): Int? {
@@ -99,7 +98,7 @@ class MajorityVotingComparisonStore<T, ID>(
             }
 
         } else {
-            val set = ConcurrentSkipListSet<ID>()
+            val set = ConcurrentHashMap.newKeySet<ID>()
             set.add(id)
             votes[pair] = set
 

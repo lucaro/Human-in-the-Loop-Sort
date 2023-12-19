@@ -31,14 +31,8 @@ class SortJob<T>(
                     list.subList(start, start + sublistLength)
                 }
 
-                val sorted = list.sortedWith(comparator)
-
-                //since sort of sublist succeeded, we can infer additional relations
-                for (start in sorted.indices) {
-                    for (end in start + 1..<sorted.size) {
-                        store.store(sorted[start].item, sorted[end].item)
-                    }
-                }
+                //sort to trigger exception on unknown comparison
+                list.sortedWith(comparator)
 
             }
         } catch (e: ComparisonUnknownException) {
