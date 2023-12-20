@@ -111,7 +111,7 @@ class MajorityVotingComparisonStore<T, ID>(
 
     override fun blacklist(o1: Any, o2: Any) {
 
-        logger.info { "blacklisting ($o1, $o2)" }
+        logger.debug { "blacklisting ($o1, $o2)" }
 
         val p1 = o1 as T to o2 as T
         if (acceptedPairs.contains(p1)) {

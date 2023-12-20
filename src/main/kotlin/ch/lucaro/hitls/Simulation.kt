@@ -11,13 +11,13 @@ object Simulation {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        for (agreement in 95 downTo 50 step 5) {
+        for (agreement in 100 downTo 50 step 5) {
 
-            val writer = File("simulations/2_uncertainty/agreement_$agreement.tsv").printWriter()
+            val writer = File("simulations/2_uncertainty/agreement_${agreement.toString().padStart(3, '0')}.tsv").printWriter()
 
-            writer.println("length\trun\tcomparisons\blacklistings")
+            writer.println("length\trun\tcomparisons\tblacklistings")
 
-            for (length in 16..1024 step 16) {
+            for (length in 8..1024 step 8) {
                 for (run in 1..10) {
 
                     val random = Random(length * run * agreement)
@@ -34,7 +34,9 @@ object Simulation {
 
                         val decision = pair.first <= pair.second
 
-                        if (decision xor (random.nextInt(100) <= agreement)) {
+                        val flip = random.nextInt(100) > agreement
+
+                        if (decision xor flip) {
                             store.vote(comparisons, pair.first, pair.second)
                         } else {
                             store.vote(comparisons, pair.second, pair.first)

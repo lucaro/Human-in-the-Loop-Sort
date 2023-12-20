@@ -48,9 +48,9 @@ class SortJob<T>(
 
             if (store is VotingComparisonStore<*, *>) {
                 store.blacklist(last.first.item!!, last.second.item!!)
+                ++blacklistCount
             }
 
-            ++blacklistCount
 
         }
 
