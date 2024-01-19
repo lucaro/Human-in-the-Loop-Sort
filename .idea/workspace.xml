@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8470d40b-84d1-4f61-a492-62046d83fc2a" name="Changes" comment="Some simulation code for comparison of different aspects">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/store/MajorityVotingComparisonStore.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/store/VotingComparisonStore.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/jte/main.jte" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/api/API.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/api/PageState.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/api/UserSession.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/api/UserSessionManager.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/api/config/Config.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/api/config/JobConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kotlinc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/Playground.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/ch/lucaro/hitls/Playground.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,13 +27,30 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="HumanInTheLoopSort" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Data Class" />
-        <option value="Kotlin Object" />
         <option value="Kotlin Interface" />
+        <option value="Kotlin Data Class" />
         <option value="Kotlin Class" />
+        <option value="Kotlin Object" />
       </list>
     </option>
   </component>
@@ -45,6 +70,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Gradle.Build HumanInTheLoopSort.executor": "Run",
+    "Gradle.Build humanintheloopsort.executor": "Run",
     "Kotlin.Playground.executor": "Run",
     "Kotlin.Simulation.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -53,12 +79,15 @@
     "WebServerToolWindowFactoryState": "false",
     "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
+    "jdk.selected.JAVA_MODULE": "17",
     "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Lucaro/Workspace/humanintheloopsort",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -68,12 +97,12 @@
       <recent name="ch.lucaro.hitls.store" />
     </key>
   </component>
-  <component name="RunManager" selected="Kotlin.Simulation">
+  <component name="RunManager" selected="Kotlin.Playground">
     <configuration name="Playground" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="ch.lucaro.hitls.Playground" />
       <module name="HumanInTheLoopSort.main" />
       <shortenClasspath name="NONE" />
-      <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG" />
+      <option name="VM_PARAMETERS" value="-Dorg.slf4j.simpleLogger.defaultLogLevel=INFO" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -92,15 +121,15 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Kotlin.Simulation" />
         <item itemvalue="Kotlin.Playground" />
+        <item itemvalue="Kotlin.Simulation" />
       </list>
     </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-17.0.9-corretto-17.0.9-3183f394aec4-8f899f12" />
+        <option value="jdk-17.0.9-corretto-17.0.9-f644763e9732-ebaef533" />
       </set>
     </attachedChunks>
   </component>

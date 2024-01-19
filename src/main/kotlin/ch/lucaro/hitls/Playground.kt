@@ -1,5 +1,7 @@
 package ch.lucaro.hitls
 
+import ch.lucaro.hitls.api.API
+import ch.lucaro.hitls.api.config.Config
 import ch.lucaro.hitls.container.ComparisonContainer
 import ch.lucaro.hitls.store.BasicComparisonStore
 import kotlin.math.ceil
@@ -21,31 +23,40 @@ object Playground {
     @JvmStatic
     fun main(args: Array<String>) {
 
-        var counter = 0
+//        var counter = 0
+//
+//        while (true) {
+//
+//            val pair = job.nextPair() ?: break
+//
+//            println(pair)
+//            val response = readln()
+//
+//            if (response.isEmpty()) {
+//                store.store(pair.first, pair.second)
+//            } else {
+//                store.store(pair.second, pair.first)
+//            }
+//            ++counter
+//
+//        }
+//
+//        val list = job.sorted()!!
+//        println(list.map { it.item })
+//
+//        println("comparisons: $counter")
+//        println("expected comparisons: ${ceil((masterList.size * log2(masterList.size.toFloat())).toDouble()).toInt()}")
+//        println(store)
+//        println("total possible combinations: ${(masterList.size * (masterList.size - 1)) / 2}")
 
-        while (true) {
 
-            val pair = job.nextPair() ?: break
+        API.init(Config(port = 8080))
 
-            println(pair)
-            val response = readln()
-
-            if (response.isEmpty()) {
-                store.store(pair.first, pair.second)
-            } else {
-                store.store(pair.second, pair.first)
-            }
-            ++counter
+        while (readln() != "quit") {
 
         }
 
-        val list = job.sorted()!!
-        println(list.map { it.item })
-
-        println("comparisons: $counter")
-        println("expected comparisons: ${ceil((masterList.size * log2(masterList.size.toFloat())).toDouble()).toInt()}")
-        println(store)
-        println("total possible combinations: ${(masterList.size * (masterList.size - 1)) / 2}")
+        API.stop()
 
 
     }
