@@ -25,14 +25,15 @@ object API {
 
     fun init(config: Config) {
 
-        JavalinJte.init();
-
         jobManager = SortJobManager(config)
 
         this.javalin = Javalin.create {
 
             it.staticFiles.add(
                 "static", Location.CLASSPATH
+            )
+            it.fileRenderer(
+                JavalinJte()
             )
 
         }.before { ctx ->
@@ -54,58 +55,50 @@ object API {
             //set to context
             ctx.attribute("session", sessionId)
 
-        }.routes {
+        }.get("/") { ctx ->
 
+            val userSession = UserSessionManager[ctx.session()]
 
-            get("/") { ctx ->
+            if (!userSession.taskStarted && ctx.queryParam("consent")
+                    ?.toBooleanStrictOrNull() == true
+            ) { //accept button clicked
 
-
-                val userSession = UserSessionManager[ctx.session()]
-
-                if (!userSession.taskStarted && ctx.queryParam("consent")?.toBooleanStrictOrNull() == true) { //accept button clicked
-
-                    logger.info { "starting new job for user '${userSession.sessionId}'" }
-                    userSession.start()
-
-                }
-
-                val queryParams = ctx.queryParamMap()
-
-                if (queryParams.containsKey("o1") && queryParams.containsKey("o2")) { //answer provided
-                    try {
-                        val o1 = UUID.fromString(queryParams["o1"]!!.first())
-                        val o2 = UUID.fromString(queryParams["o2"]!!.first())
-                        userSession.vote(o1, o2)
-                    } catch (e: Exception) {
-                        logger.error(e){ "error during processing of response" }
-                    }
-                }
-
-                ctx.render("main.jte", mapOf("session" to userSession))
-            }
-
-            get("/img/{job}/{img}") {ctx ->
-
-                val jobName = ctx.pathParam("job")
-                val imgName = ctx.pathParam("img")
-
-                val imageFile = jobManager.getImage(jobName, imgName)
-
-                if (imageFile != null) {
-                    ctx.header("Cache-Control", "max-age=31622400")
-                    ctx.writeSeekableStream(imageFile.inputStream(), "image/${imageFile.extension.lowercase()}")
-                } else {
-                    ctx.status(404)
-                    ctx.result("Not found")
-                }
-
+                logger.info { "starting new job for user '${userSession.sessionId}'" }
+                userSession.start()
 
             }
 
+            val queryParams = ctx.queryParamMap()
+
+            if (queryParams.containsKey("o1") && queryParams.containsKey("o2")) { //answer provided
+                try {
+                    val o1 = UUID.fromString(queryParams["o1"]!!.first())
+                    val o2 = UUID.fromString(queryParams["o2"]!!.first())
+                    userSession.vote(o1, o2)
+                } catch (e: Exception) {
+                    logger.error(e) { "error during processing of response" }
+                }
+            }
+
+            ctx.render("main.jte", mapOf("session" to userSession))
+
+        }.get("/img/{job}/{img}") { ctx ->
+
+            val jobName = ctx.pathParam("job")
+            val imgName = ctx.pathParam("img")
+
+            val imageFile = jobManager.getImage(jobName, imgName)
+
+            if (imageFile != null) {
+                ctx.header("Cache-Control", "max-age=31622400")
+                ctx.writeSeekableStream(imageFile.inputStream(), "image/${imageFile.extension.lowercase()}")
+            } else {
+                ctx.status(404)
+                ctx.result("Not found")
+            }
 
 
         }.start(config.port)
-
 
     }
 
