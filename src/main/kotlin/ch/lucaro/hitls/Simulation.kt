@@ -32,14 +32,14 @@ object Simulation {
 
                         val pair = job.nextPair() ?: break
 
-                        val decision = pair.first <= pair.second
+                        val decision = pair.first.item <= pair.second.item
 
                         val flip = random.nextInt(100) > agreement
 
                         if (decision xor flip) {
-                            store.vote(comparisons, pair.first, pair.second)
+                            store.vote(comparisons, pair.first.id, pair.second.id)
                         } else {
-                            store.vote(comparisons, pair.second, pair.first)
+                            store.vote(comparisons, pair.second.id, pair.first.id)
                         }
 
                         ++comparisons

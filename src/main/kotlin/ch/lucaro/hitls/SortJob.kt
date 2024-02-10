@@ -20,7 +20,10 @@ class SortJob<T>(
     var blacklistCount = 0
         private set
 
-    fun nextPair(): Pair<T, T>? {
+    var complete = false
+        private set
+
+    fun nextPair(): Pair<ComparisonContainer<T>, ComparisonContainer<T>>? {
 
         try {
 
@@ -41,19 +44,20 @@ class SortJob<T>(
             }
         } catch (e: ComparisonUnknownException) {
             val pair = e.pair
-            return pair.first.item as T to pair.second.item as T
+            return pair.first as ComparisonContainer<T> to pair.second as ComparisonContainer<T>
         } catch (i: java.lang.IllegalArgumentException) {
 
             val last = comparator.lastComparison
 
             if (store is VotingComparisonStore<*, *>) {
-                store.blacklist(last.first.item!!, last.second.item!!)
+                store.blacklist(last.first.id, last.second.id)
                 ++blacklistCount
             }
 
 
         }
 
+        complete = true
         return null
 
     }
@@ -64,6 +68,31 @@ class SortJob<T>(
         } catch (e: Exception) {
             null
         }
+
+    fun randomPair(): Pair<ComparisonContainer<T>, ComparisonContainer<T>> {
+        val first = list.random()
+        var second = list.random()
+
+        while (first == second) {
+            second = list.random()
+        }
+
+        return first to second
+    }
+
+    fun somePair(): Pair<ComparisonContainer<T>, ComparisonContainer<T>> {
+
+        if (!complete) {
+            val next = nextPair()
+            if (next != null) {
+                return next
+            }
+        }
+
+        return randomPair()
+
+    }
+
 
 
 }

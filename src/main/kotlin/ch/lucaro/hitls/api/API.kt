@@ -9,6 +9,7 @@ import io.javalin.http.Cookie
 import io.javalin.http.SameSite
 import io.javalin.http.staticfiles.Location
 import io.javalin.rendering.template.JavalinJte
+import java.util.UUID
 
 object API {
 
@@ -19,7 +20,8 @@ object API {
 
     private val logger: KLogger = KotlinLogging.logger {}
     private var javalin: Javalin? = null
-    private lateinit var jobManager: SortJobManager
+    lateinit var jobManager: SortJobManager
+        private set
 
     fun init(config: Config) {
 
@@ -60,14 +62,26 @@ object API {
 
                 val userSession = UserSessionManager[ctx.session()]
 
-                if (!userSession.taskStarted && ctx.queryParam("consent")?.toBooleanStrictOrNull() == true) {
+                if (!userSession.taskStarted && ctx.queryParam("consent")?.toBooleanStrictOrNull() == true) { //accept button clicked
 
                     logger.info { "starting new job for user '${userSession.sessionId}'" }
-                    //TODO start sort job
+                    userSession.start()
 
                 }
 
-                ctx.render("main.jte", mapOf("state" to userSession.pageState))
+                val queryParams = ctx.queryParamMap()
+
+                if (queryParams.containsKey("o1") && queryParams.containsKey("o2")) { //answer provided
+                    try {
+                        val o1 = UUID.fromString(queryParams["o1"]!!.first())
+                        val o2 = UUID.fromString(queryParams["o2"]!!.first())
+                        userSession.vote(o1, o2)
+                    } catch (e: Exception) {
+                        logger.error(e){ "error during processing of response" }
+                    }
+                }
+
+                ctx.render("main.jte", mapOf("session" to userSession))
             }
 
             get("/img/{job}/{img}") {ctx ->
@@ -99,6 +113,7 @@ object API {
         this.javalin?.stop()
         this.javalin = null
         this.jobManager.flushAll()
+        this.jobManager.writeCompleted()
     }
 
 }

@@ -1,6 +1,7 @@
 @import ch.lucaro.hitls.api.PageState
+@import ch.lucaro.hitls.api.UserSession
 
-@param PageState state
+@param UserSession session
 
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
 <main>
     <div class="container" style="padding-top: 5%">
 
-        @if(state.getPage() == PageState.Page.START)
+        @if(session.getPageState().getPage() == PageState.Page.START)
 
 
             <h1 class="display-3 text-center">Welcome</h1>
@@ -32,14 +33,31 @@
                     <a href="/?consent=true" type="button" class="btn btn-success">I agree</a>
                 </div>
                 <div class="col text-center">
-                    <a href="${state.getNoConsentLink()}" type="button" class="btn btn-danger">I do not agree</a>
+                    <a href="${session.getPageState().getNoConsentLink()}" type="button" class="btn btn-danger">I do not
+                        agree</a>
                 </div>
 
             </div>
 
-        @elseif(state.getPage() == PageState.Page.COMPARE)
-            compare
-        @elseif(state.getPage() == PageState.Page.DONE)
+        @elseif(session.getPageState().getPage() == PageState.Page.COMPARE)
+
+            <p class="lead text-center">Which of the following two images would require more words to describe?</p>
+
+            <div class="row">
+
+                <div class="col">
+                    <a href="/?o1=${session.next().getFirst().getId().toString()}&o2=${session.next().getSecond().getId().toString()}"><img
+                                src="/img/${session.getSortJobName()}/${session.next().getFirst().getId().toString()}"
+                                class="img-thumbnail mx-auto d-block" alt="image option 1"></a></div>
+                <div class="col"><a
+                   href="/?o1=${session.next().getSecond().getId().toString()}&o2=${session.next().getFirst().getId().toString()}"><img
+                            src="/img/${session.getSortJobName()}/${session.next().getSecond().getId().toString()}"
+                            class="img-thumbnail mx-auto d-block" alt="image option 2"></a>
+                </div>
+
+            </div>
+
+        @elseif(session.getPageState().getPage() == PageState.Page.DONE)
             done
         @endif
     </div>

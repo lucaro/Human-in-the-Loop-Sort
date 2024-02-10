@@ -17,21 +17,21 @@ class SortJobManager(config: Config) {
     init {
         configs.values.forEach { jobConfig ->
 
-            val images = File(jobConfig.imageFolder).listFiles { file ->
+            val imagesFiles = File(jobConfig.imageFolder).listFiles { file ->
                 file.isFile && file.extension.lowercase().let { it == "jpg" || it == "png" }
-            }!!.associateBy { it.name.lowercase() }
+            }!!
 
-            if (images.isEmpty()) {
+            if (imagesFiles.isEmpty()) {
                 return@forEach
             }
 
-            this.images[jobConfig.name] = images
-
-            val masterList = images.keys.sorted().map {
-                ComparisonContainer(it)
+            val masterList = imagesFiles.sorted().map {
+                ComparisonContainer(it.name.lowercase())
             }
 
-            val store = PersistentMajorityVotingComparisonStore(jobConfig.votes, File(jobConfig.name))
+            this.images[jobConfig.name] = imagesFiles.associateBy { f -> masterList.find { it.item == f.name.lowercase() }!!.id.toString() }
+
+            val store = PersistentMajorityVotingComparisonStore(jobConfig.votes, File(jobConfig.name), masterList)
 
             this.stores[jobConfig.name] = store
 
@@ -42,7 +42,7 @@ class SortJobManager(config: Config) {
         }
     }
 
-    fun getImage(jobName: String, imageName: String): File? = this.images[jobName]?.get(imageName)
+    fun getImage(jobName: String, imageId: String): File? = this.images[jobName]?.get(imageId)
 
     fun getJob(jobName: String) = this.jobs[jobName]
 
@@ -57,8 +57,20 @@ class SortJobManager(config: Config) {
 
     }
 
+    fun getStore(jobName: String) = this.stores[jobName]
+
     fun flushAll() {
         this.stores.values.forEach { it.flush() }
+    }
+
+    fun writeCompleted() {
+        this.jobs.forEach {
+            if (it.value.complete) {
+                val writer = File("${it.key}_${System.currentTimeMillis()}.order").printWriter()
+                it.value.sorted()?.forEach { item -> writer.println(item.item) }
+                writer.flush()
+            }
+        }
     }
 
 }

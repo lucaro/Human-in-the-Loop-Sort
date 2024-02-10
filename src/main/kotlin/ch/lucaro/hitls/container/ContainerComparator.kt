@@ -11,7 +11,7 @@ class ContainerComparator<T>(private val store: ComparisonStore<T>) : Comparator
 
         lastComparison = o1 to o2
 
-        return store.compare(o1.item, o2.item) ?: throw ComparisonUnknownException(o1, o2)
+        return store.compare(o1, o2) ?: throw ComparisonUnknownException(o1, o2)
     }
 
 }
