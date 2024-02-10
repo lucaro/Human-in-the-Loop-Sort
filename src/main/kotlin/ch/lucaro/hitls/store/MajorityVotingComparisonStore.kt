@@ -4,7 +4,7 @@ import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.concurrent.ConcurrentHashMap
 
-class MajorityVotingComparisonStore<T, ID>(
+open class MajorityVotingComparisonStore<T, ID>(
 
     private val minVotesToAcceptOption: Int
 

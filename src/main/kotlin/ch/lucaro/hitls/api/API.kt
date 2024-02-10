@@ -19,10 +19,13 @@ object API {
 
     private val logger: KLogger = KotlinLogging.logger {}
     private var javalin: Javalin? = null
+    private lateinit var jobManager: SortJobManager
 
     fun init(config: Config) {
 
         JavalinJte.init();
+
+        jobManager = SortJobManager(config)
 
         this.javalin = Javalin.create {
 
@@ -55,7 +58,7 @@ object API {
             get("/") { ctx ->
 
 
-                val userSession = UserSessionManager[ctx.attribute<String>("session")!!]
+                val userSession = UserSessionManager[ctx.session()]
 
                 if (!userSession.taskStarted && ctx.queryParam("consent")?.toBooleanStrictOrNull() == true) {
 
@@ -65,6 +68,24 @@ object API {
                 }
 
                 ctx.render("main.jte", mapOf("state" to userSession.pageState))
+            }
+
+            get("/img/{job}/{img}") {ctx ->
+
+                val jobName = ctx.pathParam("job")
+                val imgName = ctx.pathParam("img")
+
+                val imageFile = jobManager.getImage(jobName, imgName)
+
+                if (imageFile != null) {
+                    ctx.header("Cache-Control", "max-age=31622400")
+                    ctx.writeSeekableStream(imageFile.inputStream(), "image/${imageFile.extension.lowercase()}")
+                } else {
+                    ctx.status(404)
+                    ctx.result("Not found")
+                }
+
+
             }
 
 
@@ -77,6 +98,7 @@ object API {
     fun stop() {
         this.javalin?.stop()
         this.javalin = null
+        this.jobManager.flushAll()
     }
 
 }
