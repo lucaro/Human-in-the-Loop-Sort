@@ -11,7 +11,9 @@ class PageState {
     var page: Page = Page.START
         internal set
 
-    val noConsentLink = "http://google.com"
+    val noConsentLink = "http://google.com" //TODO
+
+    val successLink = "http://google.com" //TODO
 
 
 }

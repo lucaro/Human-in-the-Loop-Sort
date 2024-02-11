@@ -57,6 +57,8 @@ class SortJobManager(config: Config) {
 
     }
 
+    fun allJobNames(): List<String> = this.jobs.keys.sorted().toList()
+
     fun getStore(jobName: String) = this.stores[jobName]
 
     fun flushAll() {

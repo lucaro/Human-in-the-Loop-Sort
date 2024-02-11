@@ -7,6 +7,7 @@ import java.io.File
 @Serializable
 data class Config(
     val port: Int = 8080,
+    val statusSecret: String = "secret",
     val jobs: List<JobConfig> = emptyList()
 ) {
 

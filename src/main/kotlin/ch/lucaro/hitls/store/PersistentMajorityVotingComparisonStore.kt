@@ -21,6 +21,12 @@ class PersistentMajorityVotingComparisonStore(
 
     private val logger: KLogger = KotlinLogging.logger {}
 
+    val voteCount: Int
+        get() = this.votes.size
+
+    val comparisonCount: Int
+        get() = this.acceptedPairs.size
+
     init {
 
         if (persistentFile.exists()) {

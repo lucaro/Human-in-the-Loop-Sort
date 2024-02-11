@@ -23,6 +23,9 @@ class SortJob<T>(
     var complete = false
         private set
 
+    val elementCount: Int
+        get() = list.size
+
     fun nextPair(): Pair<ComparisonContainer<T>, ComparisonContainer<T>>? {
 
         try {

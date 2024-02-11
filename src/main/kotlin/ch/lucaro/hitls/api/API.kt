@@ -70,7 +70,8 @@ object API {
 
             val queryParams = ctx.queryParamMap()
 
-            if (queryParams.containsKey("o1") && queryParams.containsKey("o2")) { //answer provided
+            if (userSession.pageState.page == PageState.Page.COMPARE
+                && queryParams.containsKey("o1") && queryParams.containsKey("o2")) { //answer provided
                 try {
                     val o1 = UUID.fromString(queryParams["o1"]!!.first())
                     val o2 = UUID.fromString(queryParams["o2"]!!.first())
@@ -82,7 +83,7 @@ object API {
 
             ctx.render("main.jte", mapOf("session" to userSession))
 
-        }.get("/img/{job}/{img}") { ctx ->
+        }.get("/img/{job}/{img}") { ctx -> //images to compare
 
             val jobName = ctx.pathParam("job")
             val imgName = ctx.pathParam("img")
@@ -97,6 +98,16 @@ object API {
                 ctx.result("Not found")
             }
 
+
+        }.get("/status"){ctx -> //admin overview page
+
+            if(ctx.queryParam("secret") != config.statusSecret) {
+                ctx.status(403)
+                ctx.result("Forbidden")
+                return@get
+            }
+
+            ctx.render("status.jte", mapOf("manager" to jobManager))
 
         }.start(config.port)
 
