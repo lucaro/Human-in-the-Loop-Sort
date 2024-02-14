@@ -5,8 +5,8 @@ import ch.lucaro.hitls.container.ComparisonUnknownException
 import ch.lucaro.hitls.container.ContainerComparator
 import ch.lucaro.hitls.store.ComparisonStore
 import ch.lucaro.hitls.store.VotingComparisonStore
+import kotlin.math.log2
 import kotlin.math.max
-import kotlin.math.pow
 import kotlin.random.Random
 
 class SortJob<T>(
@@ -16,6 +16,9 @@ class SortJob<T>(
 ) {
 
     private val comparator = ContainerComparator(this.store)
+
+    //start with a sub-list size of 4
+    private val startExponent = max(1, log2(list.size.toFloat()).toInt() - 2)
 
     var blacklistCount = 0
         private set
@@ -30,9 +33,9 @@ class SortJob<T>(
 
         try {
 
-            for (i in 5 downTo 0) {
+            for (i in startExponent downTo 0) {
 
-                val sublistLength = max(2, list.size / 2.0.pow(i).toInt())
+                val sublistLength = max(2, list.size / (2 shl i))
 
                 val list = if (sublistLength >= list.size) {
                     list
@@ -56,7 +59,6 @@ class SortJob<T>(
                 store.blacklist(last.first.id, last.second.id)
                 ++blacklistCount
             }
-
 
         }
 

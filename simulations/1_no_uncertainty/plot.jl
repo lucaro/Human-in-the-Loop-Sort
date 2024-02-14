@@ -14,7 +14,7 @@ ax = Axis(f[1, 1], xticks = 0:256:1024, yticks = 0:5000:30000, ytickformat = v -
 lines!(ax, df_base[:, :length], df_base[:, :comparisons_mean], label = "Base") # ~2.8 nlogn
 lines!(ax, df_transitive[:, :length], df_transitive[:, :comparisons_mean], label = "Transitive") # ~1.1 nlogn
 lines!(ax, df_sublist[:, :length], df_sublist[:, :comparisons_mean], label = "Sublist") # ~2.2 nlogn
-lines!(ax, df_transitive_sublist[:, :length], df_transitive_sublist[:, :comparisons_mean], label = "Transitive + Sublist")
+lines!(ax, df_transitive_sublist[:, :length], df_transitive_sublist[:, :comparisons_mean], label = "Transitive + Sublist", linestyle = :dash)
 
 lines!(ax, x, nlogn, label = "1 nlogn", color = :gray, linestyle = :dot)
 lines!(ax, x, 2 .* nlogn, label = "2 nlogn", color = :gray, linestyle = :dash)
