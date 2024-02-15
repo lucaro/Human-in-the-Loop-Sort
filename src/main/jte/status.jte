@@ -1,5 +1,8 @@
 @import ch.lucaro.hitls.api.SortJobManager
-@param SortJobManager manager
+@import ch.lucaro.hitls.api.UserSession
+@import ch.lucaro.hitls.api.UserSessionManager
+@param SortJobManager jobManager
+@param UserSessionManager sessionManager
 
 <html lang="en">
 <head>
@@ -25,13 +28,38 @@
             </tr>
             </thead>
             <tbody>
-            @for(String job : manager.allJobNames())
+            @for(String job : jobManager.allJobNames())
                 <tr>
                     <td>${job}</td>
-                    <td>${manager.getJob(job).getComplete() ? "complete" : "active"}</td>
-                    <td>${manager.getJob(job).getElementCount()}</td>
-                    <td>${manager.getStore(job).getVoteCount()}</td>
-                    <td>${manager.getStore(job).getComparisonCount()}</td>
+                    <td>${jobManager.getJob(job).getComplete() ? "complete" : "active"}</td>
+                    <td>${jobManager.getJob(job).getElementCount()}</td>
+                    <td>${jobManager.getStore(job).getVoteCount()}</td>
+                    <td>${jobManager.getStore(job).getComparisonCount()}</td>
+                </tr>
+            @endfor
+            </tbody>
+
+        </table>
+
+        <table class="table table-striped">
+
+            <thead>
+            <tr>
+                <th scope="col">Session</th>
+                <th scope="col">Votes</th>
+                <th scope="col">Remaining</th>
+                <th scope="col">Last vote</th>
+                <th scope="col">mean time between votes</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for(UserSession userSession : sessionManager.allSessions())
+                <tr>
+                    <td>${userSession.getSessionId()}</td>
+                    <td>${userSession.getVoteCount()}</td>
+                    <td>${userSession.getRemaining()}</td>
+                    <td>${userSession.getLastVoteTime()}</td>
+                    <td>${userSession.getMeanVoteTime()}</td>
                 </tr>
             @endfor
             </tbody>

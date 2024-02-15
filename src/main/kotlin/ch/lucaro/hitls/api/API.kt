@@ -107,7 +107,7 @@ object API {
                 return@get
             }
 
-            ctx.render("status.jte", mapOf("manager" to jobManager))
+            ctx.render("status.jte", mapOf("jobManager" to jobManager, "sessionManager" to UserSessionManager))
 
         }.start(config.port)
 

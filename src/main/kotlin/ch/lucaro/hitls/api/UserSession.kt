@@ -7,7 +7,8 @@ class UserSession(val sessionId: String) {
 
     val pageState = PageState()
 
-    private var remaining = 10
+    var remaining = 10
+        private set
 
     var sortJobName: String? = null
         private set
@@ -18,7 +19,21 @@ class UserSession(val sessionId: String) {
     private var nextPair: Pair<ComparisonContainer<String>, ComparisonContainer<String>>? = null
 
     private val seenOptions = HashSet<Triple<String, UUID, UUID>>()
+    private val votes = HashSet<Triple<String, UUID, UUID>>()
+    private val voteTimes = ArrayList<Long>(remaining)
 
+    val voteCount: Int
+        get() = votes.size
+
+    val lastVoteTime: Long
+        get() = voteTimes.lastOrNull() ?: -1L
+
+    val meanVoteTime: Float
+        get() = when{
+            voteTimes.isEmpty() -> 0f
+            voteTimes.size == 1 -> 0f
+            else -> (voteTimes.last() - voteTimes.first()).toFloat() / voteTimes.size
+        }
 
     fun start() {
        this.sortJobName = API.jobManager.nextJobName()
@@ -55,6 +70,14 @@ class UserSession(val sessionId: String) {
     }
 
     fun vote(o1: UUID, o2: UUID) {
+        val vote = Triple(sortJobName!!, o1, o2)
+
+        if (votes.contains(vote)) {
+            return
+        }
+
+        votes.add(vote)
+
         if (nextPair == null) {
             return //prevent duplicates
         }

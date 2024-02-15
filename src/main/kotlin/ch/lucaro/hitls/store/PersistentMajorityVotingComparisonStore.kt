@@ -37,9 +37,16 @@ class PersistentMajorityVotingComparisonStore(
                 }
 
                 when (s.first()) {
-                    "s" -> super.store(itemMap[s[1]]?.id!!, itemMap[s[2]]?.id!!)
-                    "v" -> super.vote(s[1], itemMap[s[2]]?.id!!, itemMap[s[3]]?.id!!)
-                    "b" -> super.blacklist(itemMap[s[1]]?.id!!, itemMap[s[2]]?.id!!)
+                    "s" -> super.store(
+                        itemMap[s[1]]?.id!!,
+                        itemMap[s[2]]?.id!!)
+                    "v" -> super.vote(
+                        s[1],
+                        itemMap[s[2]]?.id!!,
+                        itemMap[s[3]]?.id!!)
+                    "b" -> super.blacklist(
+                        itemMap[s[1]]?.id!!,
+                        itemMap[s[2]]?.id!!)
                 }
             }
         }

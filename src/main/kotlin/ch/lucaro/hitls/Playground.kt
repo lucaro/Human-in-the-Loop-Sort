@@ -2,6 +2,7 @@ package ch.lucaro.hitls
 
 import ch.lucaro.hitls.api.API
 import ch.lucaro.hitls.api.config.Config
+import ch.lucaro.hitls.api.config.JobConfig
 import ch.lucaro.hitls.container.ComparisonContainer
 import ch.lucaro.hitls.store.BasicComparisonStore
 import kotlin.math.ceil
@@ -50,7 +51,10 @@ object Playground {
 //        println("total possible combinations: ${(masterList.size * (masterList.size - 1)) / 2}")
 
 
-        API.init(Config(port = 8080))
+        API.init(Config(port = 8080, jobs = listOf(
+            JobConfig("visualGenome", "imagesets/visual_genome_selection"),
+            JobConfig("YFCC100M", "imagesets/yfcc100m_selection"),
+        )))
 
         while (readln() != "quit") {
 

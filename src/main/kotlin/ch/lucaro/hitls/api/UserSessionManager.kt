@@ -19,4 +19,6 @@ object UserSessionManager {
 
     }
 
+    fun allSessions() = sessions.values.sortedByDescending { it.remaining }
+
 }
