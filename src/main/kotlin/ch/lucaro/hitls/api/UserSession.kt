@@ -7,7 +7,9 @@ class UserSession(val sessionId: String) {
 
     val pageState = PageState()
 
-    var remaining = 10
+    private val totalComparisons = 10
+
+    var remaining = totalComparisons
         private set
 
     var sortJobName: String? = null
@@ -34,6 +36,9 @@ class UserSession(val sessionId: String) {
             voteTimes.size == 1 -> 0f
             else -> (voteTimes.last() - voteTimes.first()).toFloat() / voteTimes.size
         }
+
+    val progress: Float
+        get() = (100 * votes.size).toFloat() / totalComparisons
 
     fun start() {
        this.sortJobName = API.jobManager.nextJobName()

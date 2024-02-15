@@ -13,6 +13,7 @@
 
 <body>
 <main>
+
     <div class="container" style="padding-top: 5%">
 
         @if(session.getPageState().getPage() == PageState.Page.START)
@@ -38,7 +39,12 @@
 
         @elseif(session.getPageState().getPage() == PageState.Page.COMPARE)
 
-            <p class="lead text-center">Which of the following two images would require more words to describe?</p>
+            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: ${session.getProgress()}%"></div>
+            </div>
+
+
+            <p class="lead text-center" style="padding-top: 100px">Which of the following two images would require more words to describe?</p>
 
             <div class="row">
 
