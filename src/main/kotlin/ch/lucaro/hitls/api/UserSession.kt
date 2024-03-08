@@ -1,13 +1,35 @@
 package ch.lucaro.hitls.api
 
 import ch.lucaro.hitls.container.ComparisonContainer
-import java.util.UUID
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
-class UserSession(val sessionId: String) {
+class UserSession(val sessionId: String, private val totalComparisons: Int) {
 
-    val pageState = PageState()
+    companion object {
+        private val simpleDateFormat = SimpleDateFormat("dd MMMM yyyy, HH:mm:ss", Locale.UK)
+    }
 
-    private val totalComparisons = 10
+    enum class Page {
+        START,
+        COMPARE,
+        DONE
+    }
+
+    val startTime = System.currentTimeMillis()
+
+    var page: Page = Page.START
+        internal set
+
+    var userId: String = "none"
+        set(value) {
+            if (field == "none") {
+                field = value
+            }
+        }
 
     var remaining = totalComparisons
         private set
@@ -30,11 +52,21 @@ class UserSession(val sessionId: String) {
     val lastVoteTime: Long
         get() = voteTimes.lastOrNull() ?: -1L
 
+    val lastVoteTimeFormatted: String
+        get() = simpleDateFormat.format(Date(lastVoteTime))
+
     val meanVoteTime: Float
-        get() = when{
+        get() = when {
             voteTimes.isEmpty() -> 0f
             voteTimes.size == 1 -> 0f
             else -> (voteTimes.last() - voteTimes.first()).toFloat() / voteTimes.size
+        }
+
+    val totalSessionTime: Long
+        get() = if (voteTimes.isNotEmpty()) {
+            voteTimes.last() - startTime
+        } else {
+            0
         }
 
     val progress: Float
@@ -42,7 +74,7 @@ class UserSession(val sessionId: String) {
 
     fun start() {
        this.sortJobName = API.jobManager.nextJobName()
-       pageState.page = PageState.Page.COMPARE
+       page = Page.COMPARE
     }
 
     fun next(): Pair<ComparisonContainer<String>, ComparisonContainer<String>> {
@@ -83,13 +115,15 @@ class UserSession(val sessionId: String) {
 
         votes.add(vote)
 
+        voteTimes.add(System.currentTimeMillis())
+
         if (nextPair == null) {
             return //prevent duplicates
         }
         API.jobManager.getStore(this.sortJobName!!)?.vote(sessionId, o1, o2)
         nextPair = null
         if (--remaining <= 0) {
-            pageState.page = PageState.Page.DONE
+            page = Page.DONE
         }
     }
 

@@ -26,6 +26,7 @@ object API {
     fun init(config: Config) {
 
         jobManager = SortJobManager(config)
+        UserSessionManager.config = config
 
         this.javalin = Javalin.create {
 
@@ -59,6 +60,10 @@ object API {
 
             val userSession = UserSessionManager[ctx.session()]
 
+            if (userSession.page == UserSession.Page.START && ctx.queryParam("id") != null) { //store external id if set
+                userSession.userId = ctx.queryParam("id")!!
+            }
+
             if (!userSession.taskStarted && ctx.queryParam("consent")
                     ?.toBooleanStrictOrNull() == true
             ) { //accept button clicked
@@ -70,7 +75,7 @@ object API {
 
             val queryParams = ctx.queryParamMap()
 
-            if (userSession.pageState.page == PageState.Page.COMPARE
+            if (userSession.page == UserSession.Page.COMPARE
                 && queryParams.containsKey("o1") && queryParams.containsKey("o2")) { //answer provided
                 try {
                     val o1 = UUID.fromString(queryParams["o1"]!!.first())
@@ -81,7 +86,7 @@ object API {
                 }
             }
 
-            ctx.render("main.jte", mapOf("session" to userSession))
+            ctx.render("main.jte", mapOf("session" to userSession, "config" to config))
 
         }.get("/img/{job}/{img}") { ctx -> //images to compare
 

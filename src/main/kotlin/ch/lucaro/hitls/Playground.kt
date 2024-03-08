@@ -11,15 +11,15 @@ import kotlin.random.Random
 
 object Playground {
 
-    private val random = Random(0)
-
-    private val masterList = List(8) { ComparisonContainer(it) }.shuffled(random)
-
-    private val store = BasicComparisonStore<Int>()
-
-    private val job = SortJob(
-        random, masterList, store
-    )
+//    private val random = Random(0)
+//
+//    private val masterList = List(8) { ComparisonContainer(it) }.shuffled(random)
+//
+//    private val store = BasicComparisonStore<Int>()
+//
+//    private val job = SortJob(
+//        random, masterList, store
+//    )
 
     @JvmStatic
     fun main(args: Array<String>) {
