@@ -46,20 +46,24 @@
             <thead>
             <tr>
                 <th scope="col">Session</th>
+                <th scope="col">User id</th>
                 <th scope="col">Votes</th>
                 <th scope="col">Remaining</th>
                 <th scope="col">Last vote</th>
                 <th scope="col">mean time between votes</th>
+                <th scope="col">Total session time</th>
             </tr>
             </thead>
             <tbody>
             @for(UserSession userSession : sessionManager.allSessions())
                 <tr>
                     <td>${userSession.getSessionId()}</td>
+                    <td>${userSession.getUserId()}</td>
                     <td>${userSession.getVoteCount()}</td>
                     <td>${userSession.getRemaining()}</td>
-                    <td>${userSession.getLastVoteTime()}</td>
-                    <td>${userSession.getMeanVoteTime()}</td>
+                    <td>${userSession.getLastVoteTimeFormatted()}</td>
+                    <td>${userSession.getMeanVoteTime() / 1000}</td>
+                    <td>${userSession.getTotalSessionTime() / 1000}</td>
                 </tr>
             @endfor
             </tbody>

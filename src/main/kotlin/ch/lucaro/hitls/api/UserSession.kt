@@ -15,7 +15,9 @@ class UserSession(val sessionId: String, private val totalComparisons: Int) {
 
     enum class Page {
         START,
+        CHECK,
         COMPARE,
+        FAILED,
         DONE
     }
 
@@ -23,6 +25,8 @@ class UserSession(val sessionId: String, private val totalComparisons: Int) {
 
     var page: Page = Page.START
         internal set
+
+    val attentionCheck = AttentionCheck()
 
     var userId: String = "none"
         set(value) {
@@ -36,6 +40,7 @@ class UserSession(val sessionId: String, private val totalComparisons: Int) {
 
     var sortJobName: String? = null
         private set
+        get() = if (page == Page.CHECK) "images/check" else field
 
     val taskStarted : Boolean
         get() = sortJobName != null
@@ -74,12 +79,17 @@ class UserSession(val sessionId: String, private val totalComparisons: Int) {
 
     fun start() {
        this.sortJobName = API.jobManager.nextJobName()
-       page = Page.COMPARE
+       page = Page.CHECK
     }
 
     fun next(): Pair<ComparisonContainer<String>, ComparisonContainer<String>> {
 
         if (nextPair != null) {
+            return nextPair!!
+        }
+
+        if (page == Page.CHECK) {
+            nextPair = attentionCheck.next()
             return nextPair!!
         }
 
@@ -107,6 +117,14 @@ class UserSession(val sessionId: String, private val totalComparisons: Int) {
     }
 
     fun vote(o1: UUID, o2: UUID) {
+
+        if (page == Page.CHECK) {
+            attentionCheck.store(o1, o2)
+            nextPair = null
+            return
+        }
+
+
         val vote = Triple(sortJobName!!, o1, o2)
 
         if (votes.contains(vote)) {

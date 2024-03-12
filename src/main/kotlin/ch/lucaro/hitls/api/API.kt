@@ -75,12 +75,21 @@ object API {
 
             val queryParams = ctx.queryParamMap()
 
-            if (userSession.page == UserSession.Page.COMPARE
+            if ((userSession.page == UserSession.Page.COMPARE || userSession.page == UserSession.Page.CHECK)
                 && queryParams.containsKey("o1") && queryParams.containsKey("o2")) { //answer provided
                 try {
                     val o1 = UUID.fromString(queryParams["o1"]!!.first())
                     val o2 = UUID.fromString(queryParams["o2"]!!.first())
                     userSession.vote(o1, o2)
+
+                    if (userSession.page == UserSession.Page.CHECK && userSession.attentionCheck.complete) {
+                        userSession.page = if (userSession.attentionCheck.succeeded) {
+                            UserSession.Page.COMPARE
+                        } else {
+                            UserSession.Page.FAILED
+                        }
+                    }
+
                 } catch (e: Exception) {
                     logger.error(e) { "error during processing of response" }
                 }
