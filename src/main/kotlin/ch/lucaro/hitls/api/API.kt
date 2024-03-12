@@ -1,14 +1,18 @@
 package ch.lucaro.hitls.api
 
 import ch.lucaro.hitls.api.config.Config
+import gg.jte.TemplateEngine
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.get
+import io.javalin.http.ContentType
 import io.javalin.http.Cookie
 import io.javalin.http.SameSite
 import io.javalin.http.staticfiles.Location
 import io.javalin.rendering.template.JavalinJte
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.UUID
 
 object API {
@@ -34,7 +38,9 @@ object API {
                 "static", Location.CLASSPATH
             )
             it.fileRenderer(
-                JavalinJte()
+                JavalinJte(
+                    TemplateEngine.createPrecompiled(Paths.get("jte-classes"), gg.jte.ContentType.Html)
+                )
             )
 
         }.before { ctx ->
@@ -48,7 +54,7 @@ object API {
                 SESSION_COOKIE_NAME,
                 sessionId,
                 maxAge = SESSION_COOKIE_LIFETIME,
-                secure = true,
+                secure = false,
                 sameSite = SameSite.NONE
             )
             ctx.cookie(cookie)

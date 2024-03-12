@@ -2,6 +2,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.9.21'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.21'
     id 'application'
+    id 'gg.jte.gradle' version '3.1.6'
 }
 
 group = 'ch.lucaro'
@@ -36,6 +37,19 @@ test {
 kotlin {
     jvmToolchain(8)
 }
+
+jte {
+    precompile()
+}
+
+jar {
+    dependsOn precompileJte
+    from fileTree("jte-classes") {
+        include "**/*.class"
+        include "**/*.bin"
+    }
+}
+
 
 startScripts {
     doLast {

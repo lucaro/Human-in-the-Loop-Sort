@@ -1,0 +1,35 @@
+{
+  "port": 8088,
+  "comparisonsPerUser": 75,
+  "noConsentLink": "http://ddis.ch",
+  "successLink": "http://ddis.ch",
+  "checkFailedLink": "http://ddis.ch",
+  "jobs": [
+    {
+      "name": "WikiCommons",
+      "imageFolder": "imagesets/commons_selection",
+      "votes": 3
+    },
+    {
+      "name": "flickr30k",
+      "imageFolder": "imagesets/flickr30k_selection",
+      "votes": 3
+    },
+    {
+      "name": "LVIS",
+      "imageFolder": "imagesets/lvis_selection",
+      "votes": 3
+    },
+    {
+      "name": "visualGenome",
+      "imageFolder": "imagesets/visual_genome_selection",
+      "votes": 3
+    },
+    {
+      "name": "YFCC100m",
+      "imageFolder": "imagesets/yfcc100m_selection",
+      "votes": 3
+    }
+  ]
+
+}
