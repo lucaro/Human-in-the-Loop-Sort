@@ -1,6 +1,6 @@
 {
   "port": 8088,
-  "comparisonsPerUser": 75,
+  "comparisonsPerUser": 50,
   "noConsentLink": "http://ddis.ch",
   "successLink": "http://ddis.ch",
   "checkFailedLink": "http://ddis.ch",

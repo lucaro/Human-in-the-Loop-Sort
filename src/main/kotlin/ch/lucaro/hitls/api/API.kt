@@ -11,6 +11,9 @@ import io.javalin.http.Cookie
 import io.javalin.http.SameSite
 import io.javalin.http.staticfiles.Location
 import io.javalin.rendering.template.JavalinJte
+import java.io.File
+import java.io.FileWriter
+import java.io.PrintWriter
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.UUID
@@ -31,6 +34,8 @@ object API {
 
         jobManager = SortJobManager(config)
         UserSessionManager.config = config
+
+        val sessionIdWriter = PrintWriter(FileWriter(File("sessionIds.tsv"), true))
 
         this.javalin = Javalin.create {
 
@@ -54,7 +59,7 @@ object API {
                 SESSION_COOKIE_NAME,
                 sessionId,
                 maxAge = SESSION_COOKIE_LIFETIME,
-                secure = false,
+                secure = true,
                 sameSite = SameSite.NONE
             )
             ctx.cookie(cookie)
@@ -68,6 +73,8 @@ object API {
 
             if (userSession.page == UserSession.Page.START && ctx.queryParam("id") != null) { //store external id if set
                 userSession.userId = ctx.queryParam("id")!!
+                sessionIdWriter.println("${userSession.sessionId}\t${userSession.userId}")
+                sessionIdWriter.flush()
             }
 
             if (!userSession.taskStarted && ctx.queryParam("consent")
