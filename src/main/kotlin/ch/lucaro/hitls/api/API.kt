@@ -6,6 +6,7 @@ import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
 import io.javalin.Javalin
 import io.javalin.apibuilder.ApiBuilder.get
+import io.javalin.community.ssl.SslPlugin
 import io.javalin.http.ContentType
 import io.javalin.http.Cookie
 import io.javalin.http.SameSite
@@ -47,6 +48,17 @@ object API {
                     TemplateEngine.createPrecompiled(Paths.get("jte-classes"), gg.jte.ContentType.Html)
                 )
             )
+            if (config.sslPort > 0) {
+                it.registerPlugin(
+                    SslPlugin {ssl ->
+                        ssl.pemFromPath("cert.pem", "key.pem", "password")
+                        ssl.securePort = config.sslPort
+                        ssl.insecurePort = config.port
+                        ssl.http2 = true
+                        ssl.sniHostCheck = false
+                    }
+                )
+            }
 
         }.before { ctx ->
 

@@ -69,7 +69,7 @@ class SortJobManager(config: Config) {
         this.jobs.forEach {
             if (it.value.complete) {
                 val writer = File("${it.key}_${System.currentTimeMillis()}.order").printWriter()
-                it.value.sorted()?.forEach { item -> writer.println(item.item) }
+                it.value.sortedList?.forEach { item -> writer.println(item.item) }
                 writer.flush()
             }
         }

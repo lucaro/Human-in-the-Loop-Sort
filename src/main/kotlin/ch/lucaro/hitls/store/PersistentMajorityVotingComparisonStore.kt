@@ -27,33 +27,41 @@ class PersistentMajorityVotingComparisonStore(
     val comparisonCount: Int
         get() = this.acceptedPairs.size
 
+    private val writer: PrintWriter
+
     init {
 
-        if (persistentFile.exists()) {
-            persistentFile.readLines(Charsets.UTF_8).forEach {
-                val s = it.split("\t")
-                if (s.size < 3) {
-                    return@forEach
-                }
+        val lines = if (persistentFile.exists()) persistentFile.readLines(Charsets.UTF_8) else emptyList()
 
-                when (s.first()) {
-                    "s" -> super.store(
-                        itemMap[s[1]]?.id!!,
-                        itemMap[s[2]]?.id!!)
-                    "v" -> super.vote(
-                        s[1],
-                        itemMap[s[2]]?.id!!,
-                        itemMap[s[3]]?.id!!)
-                    "b" -> super.blacklist(
-                        itemMap[s[1]]?.id!!,
-                        itemMap[s[2]]?.id!!)
-                }
+        writer = PrintWriter(FileWriter(persistentFile, true))
+
+        lines.forEach {
+            val s = it.split("\t")
+            if (s.size < 3) {
+                return@forEach
+            }
+
+            when (s.first()) {
+                "s" -> store(
+                    itemMap[s[1]]?.id!!,
+                    itemMap[s[2]]?.id!!
+                )
+
+                "v" -> vote(
+                    s[1],
+                    itemMap[s[2]]?.id!!,
+                    itemMap[s[3]]?.id!!
+                )
+
+                "b" -> blacklist(
+                    itemMap[s[1]]?.id!!,
+                    itemMap[s[2]]?.id!!
+                )
             }
         }
 
     }
 
-    private val writer = PrintWriter(FileWriter(persistentFile, true))
 
     override fun store(o1: UUID, o2: UUID) {
         super.store(o1, o2)
@@ -80,20 +88,20 @@ class PersistentMajorityVotingComparisonStore(
 
             logger.debug { "registering vote by $id for ($o1, $o2)" }
 
-            if (votes[pair]!!.size >= this.minVotesToAcceptOption) {
-                acceptedPairs.add(pair)
-                synchronized(this.writer) {
-                    writer.println("s\t${idMap[o1]?.item}\t${idMap[o2]?.item}")
-                    writer.flush()
-                }
-                logger.debug { "sufficient votes for ($o1, $o2), accepting" }
-            }
-
         } else {
             val set = ConcurrentHashMap.newKeySet<String>()
             set.add(id)
             votes[pair] = set
             logger.debug { "registering initial vote by $id for ($o1, $o2)" }
+        }
+
+        if (votes[pair]!!.size >= this.minVotesToAcceptOption) {
+            acceptedPairs.add(pair)
+            synchronized(this.writer) {
+                writer.println("s\t${idMap[o1]?.item}\t${idMap[o2]?.item}")
+                writer.flush()
+            }
+            logger.debug { "sufficient votes for ($o1, $o2), accepting" }
         }
 
 

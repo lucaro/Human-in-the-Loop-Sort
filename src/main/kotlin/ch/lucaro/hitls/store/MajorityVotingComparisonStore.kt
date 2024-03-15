@@ -96,17 +96,17 @@ open class MajorityVotingComparisonStore<T, ID>(
 
             logger.debug { "registering vote by $id for ($o1, $o2)" }
 
-            if (votes[pair]!!.size >= this.minVotesToAcceptOption) {
-                acceptedPairs.add(pair)
-                logger.debug { "sufficient votes for ($o1, $o2), accepting" }
-            }
-
         } else {
             val set = ConcurrentHashMap.newKeySet<ID>()
             set.add(id)
             votes[pair] = set
 
             logger.debug { "registering initial vote by $id for ($o1, $o2)" }
+        }
+
+        if (votes[pair]!!.size >= this.minVotesToAcceptOption) {
+            acceptedPairs.add(pair)
+            logger.debug { "sufficient votes for ($o1, $o2), accepting" }
         }
 
     }

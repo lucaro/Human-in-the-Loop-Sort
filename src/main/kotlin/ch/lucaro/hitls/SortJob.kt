@@ -17,19 +17,24 @@ class SortJob<T>(
     private val store: ComparisonStore<T>
 ) {
 
+
     private val comparator = ContainerComparator(this.store)
 
     //start with a sub-list size of 4
     private val startExponent = max(1, log2(list.size.toFloat()).toInt() - 2)
 
-    var blacklistCount = 0
+    var sortedList : List<ComparisonContainer<T>>? = null
         private set
 
-    var complete = false
+    var blacklistCount = 0
         private set
 
     val elementCount: Int
         get() = list.size
+
+    val complete: Boolean
+        get() = sortedList != null
+
 
     fun nextPair(): Pair<ComparisonContainer<T>, ComparisonContainer<T>>? {
 
@@ -37,7 +42,7 @@ class SortJob<T>(
 
             for (i in startExponent downTo 0) {
 
-                val sublistLength = max(2, list.size / 2.0.pow(i.toDouble()).toInt())
+                val sublistLength = max(2, list.size / (1 shl i))
 
                 val list = if (sublistLength >= list.size) {
                     list
@@ -50,6 +55,9 @@ class SortJob<T>(
                 list.sortedWith(comparator)
 
             }
+
+            sortedList = list.sortedWith(comparator)
+
         } catch (e: ComparisonUnknownException) {
             val pair = e.pair
             return pair.first as ComparisonContainer<T> to pair.second as ComparisonContainer<T>
@@ -64,7 +72,6 @@ class SortJob<T>(
 
         }
 
-        complete = true
         return null
 
     }
