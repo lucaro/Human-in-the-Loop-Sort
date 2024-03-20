@@ -22,11 +22,11 @@
         @if(session.getPage() == UserSession.Page.START)
 
 
-            <h1 class="display-3 text-center">Welcome</h1>
+            <h1 class="display-3 text-center">Visual Semantic Density Experiment</h1>
 
 
             <p class="lead text-center">Welcome to this experiment. The goal of this experiment is to determine the
-                visual semantic density of images. To do this, we will show you severa pairs of images. For each pair,
+                visual semantic density of images. To do this, we will show you several pairs of images. For each pair,
                 please select the image that would take you more words to describe completely. When thinking of the
                 description, imagine having to describe the image to an artist in order to draw it or to an archivist in
                 order to find it in a large collection. You will not be asked to actually produce these descriptions,
@@ -35,8 +35,10 @@
             <p class="text-center"> This experiment is conducted by researchers from the Department of Informatics at
                 the University of Zurich, Switzerland. No data other than your choices of images will be collected. The
                 images used in this experiment mostly show everyday photographs. While no explicit content is shown in
-                this experiment, some images might not be pleasant to look at. There are no other risks associated with
-                this experiment. Do you agree to participate in this experiment?</p>
+                this experiment, some images might not be pleasant to look at. Some images will be shown multiple times
+                in different pairings. Participation in this experiment will roughly take 4 - 7 minutes. There are no
+                other risks associated with this experiment. Do you agree to participate in this experiment?</p>
+
             <div class="row">
 
                 <div class="col text-center">
